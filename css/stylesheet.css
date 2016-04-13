@@ -1,0 +1,27 @@
+* {
+  -webkit-box-sizing: border-box;
+  -mox-box-sizing: border-box;
+  -box-sizing: border-box;
+}
+
+body {
+  background-color: #333;
+  color: #fff;
+}
+
+table {
+  width: 1000px;
+  margin: 0 auto;
+  height: 700px;
+  min-width: 1000px;
+  border-spacing: 5px;
+  border-collapse: separate;
+}
+
+td {
+  width: 20%;
+  height: 20%;
+  background-color: #ccc;
+  border: 1px solid #000;
+  border-radius: 10px;
+}
