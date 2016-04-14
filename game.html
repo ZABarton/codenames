@@ -28,6 +28,27 @@
     }
   }
 
+
+  function assignColors(){
+    var colors = ["black", "red", "red", "red", "red", "red", "red", "red", "red", "blue", "blue", "blue", "blue", "blue", "blue", "blue", "blue", "gray", "gray", "gray", "gray", "gray", "gray", "gray",];
+    var start = Math.floor(Math.random()*2)
+    if (start === 0) {
+      colors.push("red")
+    } else {
+      colors.push("blue")
+    }
+    var colorArray = window.knuthShuffle(colors.slice(0));
+    for(var i=0; i<colorArray.length; i++) {
+      $("#" + (i+1)).addClass(colorArray[i]);
+    }
+  }
+
+  function resetColors(){
+    $("td").removeClass()
+    $("td").css("background-color", "#ccc");
+    $("td").css("color", "#000");
+  }
+
   function getRandomClues(file){
     var text = ""
     $.get(file, function(data){
@@ -49,13 +70,40 @@
 
 setupBoard();
 getRandomClues('words.txt');
+assignColors();
 
-  $("#reset").on("click", function(){
-    getRandomClues('words.txt')
-  });
+$("#reset").on("click", function(){
+  getRandomClues('words.txt');
+  resetColors();
+  assignColors();
+});
+
+
+
+$("#gameboard").on("click", ".red", function(){
+  $(this).css("background-color", "red")
+  $(this).removeClass("red");
+});
+
+$("#gameboard").on("click", ".blue", function(){
+  $(this).css("background-color", "blue");
+  $(this).removeClass("blue");
+});
+
+$("#gameboard").on("click", ".black", function(){
+  $(this).css("background-color", "black");
+  $(this).css("color", "white");
+  $(this).removeClass("black");
+});
+
+$("#gameboard").on("click", ".gray", function(){
+  $(this).css("background-color", "gray");
+  $(this).removeClass("gray");
+});
 // console.log(getRandomClues('words.txt'))
 // console.log(getRandomClues('words.txt'))
 // var result = getRandomClues('words.txt');
+
 
 
 </script>
