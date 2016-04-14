@@ -24,4 +24,21 @@ td {
   background-color: #ccc;
   border: 1px solid #000;
   border-radius: 10px;
+  text-align: center;
+  font-size: 2em;
+  color: #000;
+  font-family: Helvetica;
+  padding: 10px;
+}
+
+.controls {
+  width: 100px;
+  margin: 0 auto;
+}
+
+button {
+  margin-top: 10px;
+  display: inline-block;
+  width: 100px;
+  padding: 5px;
 }
