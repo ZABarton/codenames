@@ -5,6 +5,7 @@
   <link rel="stylesheet" type="text/css" href="css/stylesheet.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
   <script src="https://cdn.rawgit.com/coolaj86/knuth-shuffle/master/index.js"></script>
+  <script src='js/game.js'></script>
 </head>
 <body>
   <table id="gameboard">
@@ -12,98 +13,8 @@
   <div class="controls">
     <button id="reset">New Game!</button>
   </div>
+
+
 </body>
 </html>
 
-<script type="text/javascript">
-
-  function setupBoard(){
-    var cellCounter = 1
-    for(var row=1; row<6; row++){
-      var current_row = $(document.createElement("tr")).appendTo("#gameboard");
-      for(var cell=0; cell<5; cell++) {
-        $(document.createElement("td")).attr("id", cellCounter).appendTo(current_row);
-        cellCounter ++
-      }
-    }
-  }
-
-
-  function assignColors(){
-    var colors = ["black", "red", "red", "red", "red", "red", "red", "red", "red", "blue", "blue", "blue", "blue", "blue", "blue", "blue", "blue", "gray", "gray", "gray", "gray", "gray", "gray", "gray",];
-    var start = Math.floor(Math.random()*2)
-    if (start === 0) {
-      colors.push("red")
-    } else {
-      colors.push("blue")
-    }
-    var colorArray = window.knuthShuffle(colors.slice(0));
-    for(var i=0; i<colorArray.length; i++) {
-      $("#" + (i+1)).addClass(colorArray[i]);
-    }
-  }
-
-  function resetColors(){
-    $("td").removeClass()
-    $("td").css("background-color", "#ccc");
-    $("td").css("color", "#000");
-  }
-
-  function getRandomClues(file){
-    var text = ""
-    $.get(file, function(data){
-      text=data;
-      var words = text.split( '\n' );
-      words.pop();
-      clues = window.knuthShuffle(words.slice(0));
-      clues.splice(25);
-      assignClues(clues);
-    });
-  };
-
-  function assignClues(words){
-    console.log(words.length);
-    for (var i=1; i <= words.length; i++) {
-      $("#" + i).text(words[i-1]);
-    };
-  };
-
-setupBoard();
-getRandomClues('words.txt');
-assignColors();
-
-$("#reset").on("click", function(){
-  getRandomClues('words.txt');
-  resetColors();
-  assignColors();
-});
-
-
-
-$("#gameboard").on("click", ".red", function(){
-  $(this).css("background-color", "red")
-  $(this).removeClass("red");
-});
-
-$("#gameboard").on("click", ".blue", function(){
-  $(this).css("background-color", "blue");
-  $(this).removeClass("blue");
-});
-
-$("#gameboard").on("click", ".black", function(){
-  $(this).css("background-color", "black");
-  $(this).css("color", "white");
-  $(this).removeClass("black");
-});
-
-$("#gameboard").on("click", ".gray", function(){
-  $(this).css("background-color", "gray");
-  $(this).removeClass("gray");
-});
-// console.log(getRandomClues('words.txt'))
-// console.log(getRandomClues('words.txt'))
-// var result = getRandomClues('words.txt');
-
-
-
-</script>

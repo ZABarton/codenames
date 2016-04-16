@@ -1,21 +1,42 @@
+<!DOCTYPE html>
 <html>
-     <head>
-          <script type="text/javascript" src="https://www.airconsole.com/api/airconsole-1.4.0.js"></script>
-          <script type="text/javascript">
-               // creation of a new AirConsole instance
-               var airconsole = new AirConsole();
-               // function to be executed every 3 seconds
-               setInterval(function(){
-                    // generating a random value
-                    var value = Math.floor(Math.random() * 100);
-                    // this is how we send a message to AirConsole main screen
-                    airconsole.message(AirConsole.SCREEN, value);
-                    // updating "value" h1 content to show on the controller the value we are sending
-                    document.getElementById("value").innerHTML = "I am sending " + value;
-               }, 3000);
-          </script>
-     </head>
-<body>
-<h1 id = "value" style = "color:white;margin-top:150px"></h1>
+<head>
+  <title>I am a game</title>
+  <link rel="stylesheet" type="text/css" href="css/stylesheet.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+  <script src="https://cdn.rawgit.com/coolaj86/knuth-shuffle/master/index.js"></script>
+  <script type="text/javascript" src="https://www.airconsole.com/api/airconsole-1.4.0.js"></script>
+  <script src='js/game.js'></script>
+
+  <script type="text/javascript">
+    navigator.vibrate = (navigator.vibrate ||
+                         navigator.webkitVibrate ||
+                         navigator.mozVibrate ||
+                         navigator.msVibrate);
+
+    var airconsole;
+
+    function init() {
+      airconsole = new AirConsole({"orientation": "portrait"});
+
+      airconsole.onActivePlayersChange = function(player) {
+        if (player !== undefined) {
+          document.getElementById("player_id").innerHTML = (["Red Spymaster", "Blue Spymaster"][player]);
+        } else {
+          document.getElementById("player_id").innerHTML = "Need two Spymasters!";
+        }
+      };
+    };
+  </script>
+
+</head>
+<body onload="init()">
+  <div id="player_id">Spymasters ready?</div>
+  <table id="gameboard">
+  </table>
+  <div class="controls">
+    <button id="reset">New Game!</button>
+  </div>
+
 </body>
 </html>
