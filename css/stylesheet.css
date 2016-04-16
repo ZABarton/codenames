@@ -9,6 +9,12 @@ body {
   color: #fff;
 }
 
+#wait {
+  text-align: center;
+  color: #fff;
+  font-weight: bold;
+}
+
 table {
   width: 1000px;
   margin: 0 auto;
@@ -29,6 +35,11 @@ td {
   color: #000;
   font-family: Helvetica;
   padding: 10px;
+}
+
+#player_id {
+  text-align: center;
+  font-size: 2em;
 }
 
 .controls {

@@ -1,25 +1,61 @@
+<!DOCTYPE html>
 <html>
-     <head>
-          <script type="text/javascript" src="https://www.airconsole.com/api/airconsole-1.4.0.js"></script>
-          <script type="text/javascript">
-               // creation of an empty array
-               var deviceIds = [];
-               // creation of a new AirConsole instance
-               var airconsole = new AirConsole();
-               // this is the listener for incoming messages
-               airconsole.onMessage = function(deviceId, data) {
-                    // checking if the deviceId is already in deviceIds vector, and if it's not...
-                    if(deviceIds.indexOf(deviceId) == -1){
-                         // pushing the device id
-                         deviceIds.push(deviceId);
-                         // adding a new h1 to the body
-                         document.body.innerHTML += '<h1 style = "color:white" id = "dev' + deviceId + '"></h1>'
-                    }
-                    // updating the content of the proper h1 tag according to device id and received data
-                    document.getElementById("dev" + deviceId).innerHTML = "I am receiving " + data + " from  device " + deviceId;
-               };
-          </script>
-     </head>
-     <body>
-     </body>
+<head>
+  <title>I am a game</title>
+  <link rel="stylesheet" type="text/css" href="css/stylesheet.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+  <script src="https://cdn.rawgit.com/coolaj86/knuth-shuffle/master/index.js"></script>
+  <script type="text/javascript" src="https://www.airconsole.com/api/airconsole-1.4.0.js"></script>
+  <script src='js/game.js'></script>
+</head>
+<body onload="init()">
+  <div id="wait"></div>
+  <table id="gameboard">
+  </table>
+  <div class="controls">
+    <button id="reset">New Game!</button>
+  </div>
+
+  <script>
+    function setupConsole() {
+      airconsole = new AirConsole();
+
+      airconsole.onConnect = function(device_id) {
+        checkTwoPlayers();
+      }
+
+      airconsole.onDisconnect = function(device_id) {
+        var player = airconsole.convertDeviceIdToPlayerNumber(device_id);
+        if (player != undefined) {
+          airconsole.setActivePlayers(0);
+        }
+        checkTwoPlayers();
+      }
+
+    };
+
+    function checkTwoPlayers() {
+      var active_players = airconsole.getActivePlayerDeviceIds();
+      var connected_controllers = airconsole.getControllerDeviceIds();
+      if (active_players.length == 0) {
+        if (connected_controllers.length >= 2) {
+          airconsole.setActivePlayers(2);
+          document.getElementById("wait").innerHTML = "Spymasters activated!"
+        } else if (connected_controllers.length == 1) {
+          document.getElementById("wait").innerHTML = "Need one more spymaster!"
+        } else if (connected_controllers.length == 0) {
+          document.getElementById("wait").innerHTML = "Waiting for spymasters..."
+        }
+      }
+    }
+
+    function init() {
+      setupConsole();
+      setupBoard();
+      assignBoardData('words.txt');
+    }
+
+  </script>
+
+</body>
 </html>
