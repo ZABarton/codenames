@@ -15,7 +15,7 @@ body {
   font-weight: bold;
 }
 
-table {
+#gameboard {
   width: 1000px;
   margin: 0 auto;
   height: 700px;
@@ -39,7 +39,8 @@ td {
 
 #player_id {
   text-align: center;
-  font-size: 2em;
+  font-size: 1.5em;
+  margin-bottom: 1em;
 }
 
 .controls {
@@ -52,4 +53,14 @@ button {
   display: inline-block;
   width: 100px;
   padding: 5px;
+}
+
+#spymaster table {
+  margin: 0 auto;
+  width: 80vw;
+  height: 70vh;
+}
+
+.hidden {
+  display: none;
 }

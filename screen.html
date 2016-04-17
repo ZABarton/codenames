@@ -7,6 +7,7 @@
   <script src="https://cdn.rawgit.com/coolaj86/knuth-shuffle/master/index.js"></script>
   <script type="text/javascript" src="https://www.airconsole.com/api/airconsole-1.4.0.js"></script>
   <script src='js/game.js'></script>
+  <script src='js/messages.js'></script>
 </head>
 <body onload="init()">
   <div id="wait"></div>
@@ -17,10 +18,41 @@
   </div>
 
   <script>
+
+  var words = [];
+  var airconsole = null;
+//initialize function
+// get words, return array of all words
+// when ajax request complete, set up console
+// set up board on main screen
+// assign words and clues to main screen
+
+    function init() {
+      var text = "";
+      $.get('words.txt', function(data){
+        text=data;
+        words = text.split( '\n' );
+        words.pop();
+        return words;
+      });
+
+      $(document).ajaxComplete(function(){
+        setupConsole();
+      });
+    }
+
+
     function setupConsole() {
       airconsole = new AirConsole();
 
+      airconsole.onReady = function(){
+        console.log("setting up the board")
+        setupBoard("gameboard");
+        assignBoardData();
+      };
+
       airconsole.onConnect = function(device_id) {
+        console.log("a device has connected")
         checkTwoPlayers();
       }
 
@@ -32,6 +64,11 @@
         checkTwoPlayers();
       }
 
+      airconsole.onMessage = function(device_id, data){
+        if (data.action === AC.Action.GetBoard) {
+          this.message(device_id, { message: boardData } )
+        }
+      };
     };
 
     function checkTwoPlayers() {
@@ -49,11 +86,7 @@
       }
     }
 
-    function init() {
-      setupConsole();
-      setupBoard();
-      assignBoardData('words.txt');
-    }
+
 
   </script>
 
