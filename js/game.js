@@ -1,12 +1,40 @@
-  function setupBoard(){
+var boardData = []
+
+
+  function setupBoard(div){
     var cellCounter = 1;
     for(var row=1; row<6; row++){
-      var current_row = $(document.createElement("tr")).appendTo("#gameboard");
+      var current_row = $(document.createElement("tr")).appendTo("#" + div);
       current_row.id = "row" + String(row);
       for(var cell=0; cell<5; cell++) {
-        $(document.createElement("td")).attr("id", cellCounter).appendTo(current_row);
+        $(document.createElement("td")).attr("id", div +cellCounter).appendTo(current_row);
         cellCounter ++;
       }
+    }
+  }
+
+  function clearBoard(){
+    $("#key").empty();
+  }
+
+  function resetColors(){
+    $("td").removeClass();
+    $("td").css("background-color", "#ccc");
+    $("td").css("color", "#000");
+  }
+
+  function assignBoardData(){
+    assignClues(words);
+    assignColors();
+    passBoardInfo();
+  }
+
+  function assignClues(words){
+    clues = window.knuthShuffle(words.slice(0));
+    clues.splice(25);
+    for (var i=1; i <= clues.length; i++) {
+      $("#gameboard" + i).text(clues[i-1]);
+      boardData[i] = [clues[i-1]]
     }
   }
 
@@ -20,52 +48,36 @@
     }
     var colorArray = window.knuthShuffle(colors.slice(0));
     for(var i=0; i<colorArray.length; i++) {
-      $("#" + (i+1)).addClass(colorArray[i]);
+      $("#gameboard" + (i+1)).addClass(colorArray[i]);
+      boardData[i+1].push(colorArray[i]);
     }
   }
 
-  function resetColors(){
-    $("td").removeClass();
-    $("td").css("background-color", "#ccc");
-    $("td").css("color", "#000");
-  }
-
-  function assignBoardData(file){
-    var text = "";
-    $.get(file, function(data){
-      text=data;
-      var words = text.split( '\n' );
-      words.pop();
-      clues = window.knuthShuffle(words.slice(0));
-      clues.splice(25);
-      assignClues(clues);
-      assignColors();
-      passBoardInfo();
-    });
-  }
-
-  function assignClues(words){
-    for (var i=1; i <= words.length; i++) {
-      $("#" + i).text(words[i-1]);
-      $("#" + i).data("word", words[i-1]);
+  function passBoardInfo(array){
+    // $("#spymaster").load("screen.html #gameboard")
+    //   var cellCounter = 1;
+    //   for(var row=1; row<6; row++) {
+    //     var current_row = $(document.createElement("tr")).appendTo("#gameboard");
+    //     current_row.id = "row" + String(row);
+    //     for(var cell=0; cell<5; cell++) {
+    //       $(document.createElement("td")).attr("id", "#key" + cellCounter).appendTo(current_row);
+    //       $("#key" + cellCounter).load("screen.html #gameboard"+cellCounter);
+    //       cellCounter ++;
+    //     }
+    //   }
+      for (var i = 1; i <= 25; i++) {
+      $("#key" + i).addClass(array[i]["1"]);
+      $("#key" + i).css("background-color", array[i]["1"]);
+      $("#key" + i).text(array[i]["0"]);
     }
-    console.log('done assigning clues')
-  }
-
-  function passBoardInfo(){
-    for (var cellId = 1; cellId <= 25; cellId++) {
-      var color = $("#"+String(cellId)).attr('class');
-      var text = $("#"+String(cellId)).text();
-      console.log(text);
-      console.log(color);
-    }
-  }
+  };
 
 // setupBoard();
 // assignBoardData('words.txt');
 // assignColors();
 
 $(document).ready(function(){
+
   $("#reset").on("click", function(){
     resetColors();
     assignBoardData('words.txt');
