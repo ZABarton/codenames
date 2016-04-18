@@ -24,17 +24,27 @@ body {
   border-collapse: separate;
 }
 
-td {
+#gameboard td {
   width: 20%;
   height: 20%;
   background-color: #ccc;
   border: 1px solid #000;
   border-radius: 10px;
   text-align: center;
-  font-size: 2em;
-  color: #000;
-  font-family: Helvetica;
+  font-size: 2.5em;
+  font-family: 'Special Elite', cursive;
   padding: 10px;
+  text-transform: uppercase;
+
+  -webkit-text-stroke: 1px black;
+  color: white;
+  text-shadow:
+     1px 1px 0 #000,
+   -1px -1px 0 #000,
+    1px -1px 0 #000,
+    -1px 1px 0 #000,
+     1px 1px 0 #000;
+    -webkit-font-smoothing: antialiased;
 }
 
 #player_id {
@@ -55,11 +65,22 @@ button {
   padding: 5px;
 }
 
-#spymaster table {
+#key {
   margin: 0 auto;
-  width: 80vw;
-  height: 70vh;
+  max-width: 80vw;
+  max-height: 70vh;
+  overflow: scroll;
 }
+
+#key td {
+  width: 20%;
+  height: 20%;
+  padding: 0 10px;
+  text-align: center;
+  text-transform: uppercase;
+  padding: 5px;
+}
+
 
 .hidden {
   display: none;

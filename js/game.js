@@ -20,7 +20,7 @@ var boardData = []
   function resetColors(){
     $("td").removeClass();
     $("td").css("background-color", "#ccc");
-    $("td").css("color", "#000");
+    $("td").css("color", "#fff");
   }
 
   function assignBoardData(){
@@ -54,20 +54,12 @@ var boardData = []
   }
 
   function passBoardInfo(array){
-    // $("#spymaster").load("screen.html #gameboard")
-    //   var cellCounter = 1;
-    //   for(var row=1; row<6; row++) {
-    //     var current_row = $(document.createElement("tr")).appendTo("#gameboard");
-    //     current_row.id = "row" + String(row);
-    //     for(var cell=0; cell<5; cell++) {
-    //       $(document.createElement("td")).attr("id", "#key" + cellCounter).appendTo(current_row);
-    //       $("#key" + cellCounter).load("screen.html #gameboard"+cellCounter);
-    //       cellCounter ++;
-    //     }
-    //   }
       for (var i = 1; i <= 25; i++) {
       $("#key" + i).addClass(array[i]["1"]);
       $("#key" + i).css("background-color", array[i]["1"]);
+      if (array[i]["1"] === "black") {
+        $("#key" + i).css("color", "white");
+      }
       $("#key" + i).text(array[i]["0"]);
     }
   };
@@ -79,33 +71,32 @@ var boardData = []
 $(document).ready(function(){
 
   $("#reset").on("click", function(){
+    $("#gameboard").empty()
+    setupBoard("gameboard");
     resetColors();
     assignBoardData('words.txt');
   });
 
-  $("#gameboard").on("click", ".red", function(){
-    $(this).css("background-color", "red");
-    $(this).removeClass("red");
-  });
+  // $("#gameboard").on("click", ".red", function(){
+  //   $(this).css("background-color", "red");
+  //   $(this).removeClass("red");
+  // });
 
-  $("#gameboard").on("click", ".blue", function(){
-    $(this).css("background-color", "blue");
-    $(this).removeClass("blue");
-  });
+  // $("#gameboard").on("click", ".blue", function(){
+  //   $(this).css("background-color", "blue");
+  //   $(this).removeClass("blue");
+  // });
 
-  $("#gameboard").on("click", ".black", function(){
-    $(this).css("background-color", "black");
-    $(this).css("color", "white");
-    $(this).removeClass("black");
-  });
+  // $("#gameboard").on("click", ".black", function(){
+  //   $(this).css("background-color", "black");
+  //   $(this).css("color", "white");
+  //   $(this).removeClass("black");
+  // });
 
-  $("#gameboard").on("click", ".gray", function(){
-    $(this).css("background-color", "gray");
-    $(this).removeClass("gray");
-  });
+  // $("#gameboard").on("click", ".gray", function(){
+  //   $(this).css("background-color", "gray");
+  //   $(this).removeClass("gray");
+  // });
 
 });
-// console.log(assignBoardData('words.txt'))
-// console.log(assignBoardData('words.txt'))
-// var result = assignBoardData('words.txt');
 

@@ -2,6 +2,7 @@
 <html>
 <head>
   <title>I am a game</title>
+  <link href='https://fonts.googleapis.com/css?family=Special+Elite' rel='stylesheet' type='text/css'>
   <link rel="stylesheet" type="text/css" href="css/stylesheet.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
   <script src="https://cdn.rawgit.com/coolaj86/knuth-shuffle/master/index.js"></script>
@@ -67,6 +68,8 @@
       airconsole.onMessage = function(device_id, data){
         if (data.action === AC.Action.GetBoard) {
           this.message(device_id, { message: boardData } )
+        } else if (data.action === AC.Action.UpdateBoard) {
+          $("#gameboard" + data.id).css("background-color", data.color);
         }
       };
     };
