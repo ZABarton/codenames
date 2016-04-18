@@ -3,7 +3,7 @@
 <head>
   <title>I am a game</title>
 
-  <meta name="viewport" content="width=device-width,height=device-height initial-scale=1">
+  <meta name="viewport" content="initial-scale=1">
   <link rel="stylesheet" type="text/css" href="css/stylesheet.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
   <script src="https://cdn.rawgit.com/coolaj86/knuth-shuffle/master/index.js"></script>
@@ -18,6 +18,7 @@
                          navigator.msVibrate);
 
     var airconsole;
+    var playerName;
 
     function init() {
 
@@ -25,7 +26,8 @@
 
       airconsole.onActivePlayersChange = function(player) {
         if (player !== undefined) {
-          document.getElementById("player_id").innerHTML = (["Red Spymaster", "Blue Spymaster"][player]);
+          playerName = (["Red Spymaster", "Blue Spymaster"][player]);
+          document.getElementById("player_id").innerHTML = playerName
           $("#start_game").removeClass("hidden");
         } else {
           document.getElementById("player_id").innerHTML = "Need two Spymasters!";
@@ -35,17 +37,32 @@
       };
 
       var start_button = document.getElementById('start_game');
-
+      var new_button = document.getElementById('new_game');
       start_button.addEventListener('click', function(){
+        clearBoard();
+        setupBoard("key");
+        $("#player_id").html(playerName);
+        $("#new_game").addClass("hidden");
         airconsole.message(AirConsole.SCREEN, {
           action: AC.Action.GetBoard
         })
       });
 
+      new_button.addEventListener('click', function(){
+        clearBoard();
+        airconsole.message(AirConsole.SCREEN, {
+          action: AC.Action.SetBoard
+        })
+      });
+
       airconsole.onMessage = function(device_id, data) {
         if (device_id === AirConsole.SCREEN) {
-          if (data.message) {
-            setupBoard("key");
+          if (typeof data.message === "string" ) {
+            clearBoard();
+            $("#player_id").html(data.message);
+            $("#new_game").removeClass("hidden")
+            $("#start_game").removeClass("hidden")
+          } else if (data.message) {
             passBoardInfo(data.message);
           }
         }
@@ -55,14 +72,20 @@
   $(document).ready(function(){
 
     $("#key").on("click", "td", function(){
-      airconsole.message(AirConsole.SCREEN, {
-        action: AC.Action.UpdateBoard,
-        color: $(this).attr("class"),
-        id: $(this).attr("id").slice(3)
-      });
+      if ($(this).hasClass("red") ||
+          $(this).hasClass("blue") ||
+          $(this).hasClass("gray") ||
+          $(this).hasClass("black")) {
+        airconsole.message(AirConsole.SCREEN, {
+          action: AC.Action.UpdateBoard,
+          color: $(this).attr("class"),
+          id: $(this).attr("id").slice(3),
+          name: playerName
+        });
+      }
+      $(this).removeClass()
       $(this).css("background-color", "white")
       $(this).css("color", "black");
-      $(this).removeClass();
     });
 
 
@@ -76,7 +99,8 @@
   <table id="key">
   </table>
   <div class="controls">
-    <button id="start_game" class="hidden">Start Game</button>
+    <button id="start_game" class="hidden">Reload Game Data</button>
+    <button id="new_game" class="hidden">New Game</button>
   </div>
 
 </body>

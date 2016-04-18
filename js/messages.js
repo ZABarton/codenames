@@ -2,7 +2,8 @@ var AC =  {};
 
 AC.Action = {
   GetBoard: "transfer",
-  UpdateBoard: "changeColor"
+  UpdateBoard: "changeColor",
+  SetBoard: "resetBoard"
 };
 
 

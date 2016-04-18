@@ -1,5 +1,9 @@
 var boardData = []
-
+var redCount = null
+var blueCount = null
+var redScore = null;
+var blueScore = null;
+var startTeam = null
 
   function setupBoard(div){
     var cellCounter = 1;
@@ -39,18 +43,29 @@ var boardData = []
   }
 
   function assignColors(){
+    blueCount = 0;
+    redCount = 0;
+    redScore = 0;
+    blueScore = 0;
     var colors = ["black", "red", "red", "red", "red", "red", "red", "red", "red", "blue", "blue", "blue", "blue", "blue", "blue", "blue", "blue", "gray", "gray", "gray", "gray", "gray", "gray", "gray",];
     var start = Math.floor(Math.random()*2);
     if (start === 0) {
       colors.push("red");
+      redCount = 9
+      startTeam = "red"
+      blueCount = 8
     } else {
       colors.push("blue");
+      redCount = 8
+      startTeam = "blue"
+      blueCount = 9
     }
     var colorArray = window.knuthShuffle(colors.slice(0));
     for(var i=0; i<colorArray.length; i++) {
       $("#gameboard" + (i+1)).addClass(colorArray[i]);
       boardData[i+1].push(colorArray[i]);
     }
+    $("#wait").html("<span class='redText'>Red Team: <span id='rScore'>" + redScore + "</span>/" + redCount + "</span> || <span class='blueText'>Blue Team: <span id='bScore'>" + blueScore + "</span>/" + blueCount +"</span>");
   }
 
   function passBoardInfo(array){
@@ -67,15 +82,6 @@ var boardData = []
 // setupBoard();
 // assignBoardData('words.txt');
 // assignColors();
-
-$(document).ready(function(){
-
-  $("#reset").on("click", function(){
-    $("#gameboard").empty()
-    setupBoard("gameboard");
-    resetColors();
-    assignBoardData('words.txt');
-  });
 
   // $("#gameboard").on("click", ".red", function(){
   //   $(this).css("background-color", "red");
@@ -98,5 +104,5 @@ $(document).ready(function(){
   //   $(this).removeClass("gray");
   // });
 
-});
+
 

@@ -13,6 +13,7 @@ body {
   text-align: center;
   color: #fff;
   font-weight: bold;
+  font-size: 3em;
 }
 
 #gameboard {
@@ -27,7 +28,7 @@ body {
 #gameboard td {
   width: 20%;
   height: 20%;
-  background-color: #ccc;
+  background-color: #F0E68C;
   border: 1px solid #000;
   border-radius: 10px;
   text-align: center;
@@ -67,9 +68,8 @@ button {
 
 #key {
   margin: 0 auto;
-  max-width: 80vw;
-  max-height: 70vh;
-  overflow: scroll;
+  max-width: 70%;
+  max-height: 70%;
 }
 
 #key td {
@@ -84,4 +84,12 @@ button {
 
 .hidden {
   display: none;
+}
+
+.blueText {
+  color: blue;
+}
+
+.redText {
+  color: red;
 }

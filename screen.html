@@ -22,6 +22,7 @@
 
   var words = [];
   var airconsole = null;
+
 //initialize function
 // get words, return array of all words
 // when ajax request complete, set up console
@@ -68,8 +69,31 @@
       airconsole.onMessage = function(device_id, data){
         if (data.action === AC.Action.GetBoard) {
           this.message(device_id, { message: boardData } )
+        } else if (data.action === AC.Action.SetBoard) {
+            $("#gameboard").empty()
+            setupBoard("gameboard");
+            resetColors();
+            assignBoardData('words.txt');
         } else if (data.action === AC.Action.UpdateBoard) {
           $("#gameboard" + data.id).css("background-color", data.color);
+          if (data.color === "blue") {
+            blueScore += 1
+            document.getElementById("bScore").innerHTML = blueScore;
+            if (blueScore >= blueCount) {
+              airconsole.broadcast( { message: "Blue Team Wins!"})
+              document.getElementById("wait").innerHTML = "<span class='blueText'>BLUE TEAM WINS</span>"
+            }
+          } else if (data.color === "red") {
+            redScore += 1
+            document.getElementById("rScore").innerHTML = redScore;
+            if (redScore >= redCount) {
+              airconsole.broadcast( { message: "Red Team Wins!"})
+              document.getElementById("wait").innerHTML = "<span class='redText'>RED TEAM WINS</span>"
+            }
+          } else if (data.color === "black") {
+            airconsole.broadcast({ message: "A Team Has Activated the Assassin!"})
+            document.getElementById("wait").innerHTML = data.name + " has activated the assassin and lost the game!"
+          }
         }
       };
     };
@@ -80,7 +104,7 @@
       if (active_players.length == 0) {
         if (connected_controllers.length >= 2) {
           airconsole.setActivePlayers(2);
-          document.getElementById("wait").innerHTML = "Spymasters activated!"
+            document.getElementById("wait").innerHTML = "<span class='redText'>Red Team: <span id='rScore'>" + redScore + "</span>/" + redCount + "</span> || <span class='blueText'>Blue Team: <span id='bScore'>" + blueScore + "</span>/" + blueCount +"</span>"
         } else if (connected_controllers.length == 1) {
           document.getElementById("wait").innerHTML = "Need one more spymaster!"
         } else if (connected_controllers.length == 0) {
@@ -88,7 +112,6 @@
         }
       }
     }
-
 
 
   </script>
